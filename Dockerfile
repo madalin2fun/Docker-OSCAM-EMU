@@ -79,4 +79,4 @@ COPY root/ /
 
 # Ports and volumes
 EXPOSE 8888
-VOLUME /config
+VOLUME /config/oscam
