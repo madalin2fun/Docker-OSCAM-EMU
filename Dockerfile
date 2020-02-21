@@ -17,6 +17,7 @@ RUN \
 	libusb-dev \
 	linux-headers \
 	make \
+	git \
 	openssl-dev \
 	pcsc-lite-dev \
 	subversion \
