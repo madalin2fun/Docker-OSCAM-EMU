@@ -1,29 +1,31 @@
-FROM lsiobase/alpine:3.7
+FROM lsiobase/alpine:3.11
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
+ARG OSCAM_VERSION
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
 LABEL maintainer="saarg"
 
 RUN \
  echo "**** install build packages ****" && \
  apk add --no-cache --virtual=build-dependencies \
-	git \
+	bzr \
 	curl \
 	gcc \
 	g++ \
 	libusb-dev \
 	linux-headers \
 	make \
-	libressl-dev \
+	openssl-dev \
 	pcsc-lite-dev \
+	subversion \
 	tar && \
  echo "**** install runtime packages ****" && \
  apk add --no-cache \
 	ccid \
-	libcrypto1.0 \
-	libssl1.0 \
+	libcrypto1.1 \
+	libssl1.1 \
 	libusb \
 	pcsc-lite \
 	pcsc-lite-libs && \
@@ -79,4 +81,4 @@ COPY root/ /
 
 # Ports and volumes
 EXPOSE 8888
-VOLUME /config/oscam
+VOLUME /config
