@@ -1,4 +1,4 @@
-FROM lsiobase/alpine:3.11
+FROM ghcr.io/linuxserver/baseimage-alpine:3.11
 
 # set version label
 ARG BUILD_DATE
@@ -17,7 +17,6 @@ RUN \
 	libusb-dev \
 	linux-headers \
 	make \
-	git \
 	openssl-dev \
 	pcsc-lite-dev \
 	subversion \
@@ -82,4 +81,4 @@ COPY root/ /
 
 # Ports and volumes
 EXPOSE 8888
-VOLUME /config/oscam
+VOLUME /config
