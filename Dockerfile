@@ -20,8 +20,7 @@ RUN \
 	openssl-dev \
 	pcsc-lite-dev \
 	subversion \
-	tar \
-	git && \
+	tar && \
  echo "**** install runtime packages ****" && \
  apk add --no-cache \
 	ccid \
