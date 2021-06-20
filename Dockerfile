@@ -10,7 +10,6 @@ LABEL maintainer="saarg"
 RUN \
  echo "**** install build packages ****" && \
  apk add --no-cache --virtual=build-dependencies \
- 	git \
 	bzr \
 	curl \
 	gcc \
@@ -30,7 +29,7 @@ RUN \
 	libusb \
 	pcsc-lite \
 	pcsc-lite-libs && \
- echo "**** compile oscam ****" && \
+echo "**** compile oscam ****" && \
  git clone https://github.com/oscam-emu/oscam-patched.git /tmp/oscam-emu && \
  cd /tmp/oscam-emu && \
  ./config.sh \
