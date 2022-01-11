@@ -33,7 +33,7 @@ RUN \
 echo "**** compile oscam ****" && \
  git clone https://github.com/oscam-emu/oscam-patched.git /tmp/oscam-emu && \
  cd /tmp/oscam-emu && \
-  ./config.sh \
+ ./config.sh \
 	--enable all \
 	--disable \
 	CARDREADER_DB2COM \
