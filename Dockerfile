@@ -1,4 +1,4 @@
-FROM ghcr.io/linuxserver/baseimage-alpine:3.15
+FROM ghcr.io/linuxserver/baseimage-alpine:arm32v7-3.15
 
 # set version label
 ARG BUILD_DATE
@@ -18,8 +18,9 @@ RUN \
     openssl-dev \
     pcsc-lite-dev \
     subversion \
-    tar \
-    git && \
+	wget \
+	patch \
+    tar && \
   echo "**** install runtime packages ****" && \
   apk add --no-cache \
     ccid \
@@ -28,28 +29,36 @@ RUN \
     libssl1.1 \
     libusb \
     pcsc-lite \
+	wget \
+	patch \
     pcsc-lite-libs && \
   echo "**** compile oscam ****" && \
-	git clone https://github.com/oscam-emu/oscam-patched.git /tmp/oscam-emu && \
-	cd /tmp/oscam-emu && \
-	./config.sh \
-		--enable all \
-		--disable \
-		CARDREADER_DB2COM \
-		CARDREADER_INTERNAL \
-		CARDREADER_STINGER \
-		CARDREADER_STAPI \
-		CARDREADER_STAPI5 \
-		IPV6SUPPORT \
-		LCDSUPPORT \
-		LEDSUPPORT \
-		READ_SDT_CHARSETS && \
+  if [ -z ${OSCAM_VERSION+x} ]; then \
+    OSCAM_VERSION=$(svn info --show-item revision https://svn.streamboard.tv/oscam/trunk ); \
+  fi && \
+  svn checkout https://svn.streamboard.tv/oscam/trunk@${OSCAM_VERSION} /tmp/oscam-svn && \
+  cd /tmp/oscam-svn && \
+  wget https://github.com/oscam-emu/oscam-emu/raw/master/oscam-emu.patch && \
+  chmod 755 oscam-emu.patch && \
+  patch -p0 <oscam-emu.patch && \
+  ./config.sh \
+    --enable all \
+    --disable \
+    CARDREADER_DB2COM \
+    CARDREADER_INTERNAL \
+    CARDREADER_STINGER \
+    CARDREADER_STAPI \
+    CARDREADER_STAPI5 \
+    IPV6SUPPORT \
+    LCDSUPPORT \
+    LEDSUPPORT \
+    READ_SDT_CHARSETS && \
   make \
-	CONF_DIR=/config \
-	DEFAULT_PCSC_FLAGS="-I/usr/include/PCSC" \
-	NO_PLUS_TARGET=1 \
-	OSCAM_BIN=/usr/bin/oscam \
-	pcsc-libusb && \
+    CONF_DIR=/config \
+    DEFAULT_PCSC_FLAGS="-I/usr/include/PCSC" \
+    NO_PLUS_TARGET=1 \
+    OSCAM_BIN=/usr/bin/oscam \
+    pcsc-libusb && \
   echo "**** fix broken permissions from pcscd install ****" && \
   chown root:root \
     /usr/sbin/pcscd && \
