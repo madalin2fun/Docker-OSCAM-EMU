@@ -15,5 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      run: docker build   --no-cache   --pull   -t oscam:latest  -f Dockerfile
+      run: docker run --rm --privileged multiarch/qemu-user-static:register --reset $$ \ docker build   --no-cache   --pull   -t oscam:latest  -f Dockerfile
